@@ -21,7 +21,11 @@ module Apriori
       ops[:max_items] = 10
 
       transactions.each do |transaction|
-        infile.puts Array(transaction).join(",")
+        if options[:separator]
+          infile.puts transaction.to_s.split(options[:separator]).reject(&:empty?).join(",")
+        else
+          infile.puts Array(transaction).join(",")
+        end
       end
 
       infile.puts
@@ -29,7 +33,7 @@ module Apriori
 
       command = Escape.shell_command([binary, "-tr", "-c#{ops[:min_support]}", "-n#{ops[:max_items]}", "-m#{ops[:min_items]}", "-s#{ops[:min_support]}", "-I<", "-v;%S;%C", "-f,", "-k,", infile.path, outfile.path])
 
-      `#{command}`
+      `#{command} 2> /dev/null &> /dev/null`
 
       outfile.rewind
 

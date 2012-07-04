@@ -4,7 +4,7 @@ require "apriori/version"
 
 Gem::Specification.new do |s|
   s.name        = "apriori"
-  s.version     = Significance::VERSION
+  s.version     = Apriori::VERSION
   s.authors     = ["Benjamin Vetter"]
   s.email       = ["vetter@flakks.com"]
   s.homepage    = ""

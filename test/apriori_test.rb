@@ -3,8 +3,12 @@ require File.expand_path("../../lib/apriori", __FILE__)
 require "test/unit"
 
 class AprioriTest < Test::Unit::TestCase
-  def test_association_rules
-    calculated_rules = Apriori.association_rules([["beer", "cheese"],["beer", "mr.tom"], ["beer", "cheese"]])
+  def test_rules
+    calculated_rules = []
+
+    Apriori.rules([["beer", "cheese"],["beer", "mr.tom"], ["beer", "cheese"]]) do |rule|
+      calculated_rules.push rule
+    end
 
     expected_rules = [{ :destination => ["beer"], :source => ["mr.tom"], :support => 25.0, :confidence => 100.0 },
       { :destination => ["mr.tom"], :source => ["beer"], :support => 25.0, :confidence => 33.3333 },
@@ -14,8 +18,12 @@ class AprioriTest < Test::Unit::TestCase
     assert_equal expected_rules, calculated_rules
   end
 
-  def test_association_rules_with_separator
-    calculated_rules = Apriori.association_rules(["beer,cheese", "beer,mr.tom", "beer,cheese"], :separator => /\s*,\s*/)
+  def test_rules_with_separator
+    calculated_rules = []
+
+    Apriori.rules(["beer,cheese", "beer,mr.tom", "beer,cheese"], :separator => /\s*,\s*/) do |rule|
+      calculated_rules.push rule
+    end
 
     expected_rules = [{ :destination => ["beer"], :source => ["mr.tom"], :support => 25.0, :confidence => 100.0 },
       { :destination => ["mr.tom"], :source => ["beer"], :support => 25.0, :confidence => 33.3333 },

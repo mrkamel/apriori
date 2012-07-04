@@ -4,7 +4,7 @@ require "tempfile"
 require "escape"
 
 module Apriori
-  def self.association_rules(transactions, options = {})
+  def self.rules(transactions, options = {})
     binary = File.expand_path("../../bin/apriori", __FILE__)
 
     infile = Tempfile.new("apriori_in")
@@ -40,12 +40,12 @@ module Apriori
 
       outfile.rewind
 
-      outfile.read.lines.collect do |line|
+      outfile.each do |line|
         rule, support, confidence = line.strip.split(";")
 
         destination, source = rule.split("<")
 
-        { :destination => destination.split(","), :source => source.split(","), :support => support.to_f, :confidence => confidence.to_f }
+        yield :destination => destination.split(","), :source => source.split(","), :support => support.to_f, :confidence => confidence.to_f
       end
     ensure
       infile.close

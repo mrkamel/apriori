@@ -1,5 +1,5 @@
 
-module Apriori
-  VERSION = "0.0.1"
+class Apriori
+  VERSION = "0.0.2"
 end
 

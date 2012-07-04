@@ -4,6 +4,8 @@ require "tempfile"
 require "escape"
 
 class Apriori
+  include Enumerable
+
   def initialize(infile, outfile, options = {})
     @infile = infile
     @outfile = outfile

@@ -7,9 +7,9 @@ class AprioriTest < Test::Unit::TestCase
     calculated_rules = []
 
     Apriori.rules do |apriori|
-      apriori.add_transaction ["beer", "cheese"]
-      apriori.add_transaction ["beer", "mr.tom"]
-      apriori.add_transaction ["beer", "cheese"]
+      apriori.add ["beer", "cheese"]
+      apriori.add ["beer", "mr.tom"]
+      apriori.add ["beer", "cheese"]
 
       apriori.each do |rule|
         calculated_rules.push rule

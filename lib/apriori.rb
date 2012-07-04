@@ -32,7 +32,7 @@ class Apriori
     end
   end
 
-  def add_transaction(transaction)
+  def add(transaction)
     @infile.puts transaction.join(",")
   end
 

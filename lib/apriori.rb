@@ -11,14 +11,15 @@ module Apriori
     outfile = Tempfile.new("apriori_out")
 
     begin
-      ops = options.dup
+      ops = {}
 
       ops[:min_support] = 1
       ops[:max_support] = 100
       ops[:min_confidence] = 20
-      ops[:max_confidence] = 100
       ops[:min_items] = 2
       ops[:max_items] = 10
+
+      ops.merge! options
 
       transactions.each do |transaction|
         if options[:separator]
@@ -31,7 +32,9 @@ module Apriori
       infile.puts
       infile.flush
 
-      command = Escape.shell_command([binary, "-tr", "-c#{ops[:min_support]}", "-n#{ops[:max_items]}", "-m#{ops[:min_items]}", "-s#{ops[:min_support]}", "-I<", "-v;%S;%C", "-f,", "-k,", infile.path, outfile.path])
+      command = Escape.shell_command([binary, "-tr", "-c#{ops[:min_confidence]}",
+        "-n#{ops[:max_items]}", "-m#{ops[:min_items]}", "-S#{ops[:max_support]}",
+        "-s#{ops[:min_support]}", "-I<", "-v;%S;%C", "-f,", "-k,", infile.path, outfile.path])
 
       `#{command} 2> /dev/null &> /dev/null`
 

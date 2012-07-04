@@ -15,7 +15,7 @@ class AprioriTest < Test::Unit::TestCase
   end
 
   def test_association_rules_with_separator
-    calculated_rules = Apriori.association_rules(["beer,cheese","beer,mr.tom", "beer,cheese"], :separator => /\s*,\s*/)
+    calculated_rules = Apriori.association_rules(["beer,cheese", "beer,mr.tom", "beer,cheese"], :separator => /\s*,\s*/)
 
     expected_rules = [{ :destination => ["beer"], :source => ["mr.tom"], :support => 25.0, :confidence => 100.0 },
       { :destination => ["mr.tom"], :source => ["beer"], :support => 25.0, :confidence => 33.3333 },

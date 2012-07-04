@@ -1,20 +1,23 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/apriori/version', __FILE__)
+$:.push File.expand_path("../lib", __FILE__)
+require "apriori/version"
 
-Gem::Specification.new do |gem|
-  gem.authors       = ["Benjamin Vetter"]
-  gem.email         = ["vetter@flakks.com"]
-  gem.description   = %q{Another apriori wrapper}
-  gem.summary       = %q{Another ruby apriori wrapper of Christian Borgelt's implementation}
-  gem.homepage      = ""
+Gem::Specification.new do |s|
+  s.name        = "apriori"
+  s.version     = Significance::VERSION
+  s.authors     = ["Benjamin Vetter"]
+  s.email       = ["vetter@flakks.com"]
+  s.homepage    = ""
+  s.summary     = %q{Another ruby apriori wrapper}
+  s.description = %q{Another ruby apriori wrapper of Christian Borgelt's implementation}
 
-  gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "apriori"
-  gem.require_paths = ["lib"]
-  gem.version       = Apriori::VERSION
+  s.rubyforge_project = "apriori"
 
-  gem.add_development_dependency "rake"
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
+
+  s.add_development_dependency "rake"
 end
 

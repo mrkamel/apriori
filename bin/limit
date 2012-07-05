@@ -1,0 +1,8 @@
+#!/usr/bin/ruby
+
+memory = ARGV.shift.to_i
+
+Process.setrlimit(Process::RLIMIT_AS, memory) unless memory.zero?
+
+exec *ARGV
+

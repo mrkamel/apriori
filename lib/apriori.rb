@@ -17,6 +17,7 @@ class Apriori
     @ops[:min_confidence] = 20
     @ops[:min_items] = 2
     @ops[:max_items] = 10
+    @ops[:memory_limit] = 0
 
     @ops.merge! options
   end
@@ -39,12 +40,13 @@ class Apriori
   end
 
   def each
+    limit = File.expand_path("../../bin/limit", __FILE__)
     binary = File.expand_path("../../bin/apriori", __FILE__)
 
     @infile.puts
     @infile.flush
 
-    command = Escape.shell_command([binary, "-tr", "-c#{@ops[:min_confidence]}",
+    command = Escape.shell_command([limit, @ops[:memory_limit].to_s, binary, "-tr", "-c#{@ops[:min_confidence]}",
       "-n#{@ops[:max_items]}", "-m#{@ops[:min_items]}", "-S#{@ops[:max_support]}",
       "-s#{@ops[:min_support]}", "-I<", "-v;%S;%C", "-f,", "-k,", @infile.path, @outfile.path])
 

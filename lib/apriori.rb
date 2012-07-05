@@ -52,6 +52,8 @@ class Apriori
 
     `#{command} 2> /dev/null &> /dev/null`
 
+    raise unless $?.exitstatus.zero?
+
     @outfile.rewind
 
     @outfile.each do |line|

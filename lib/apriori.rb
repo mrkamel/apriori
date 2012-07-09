@@ -6,9 +6,9 @@ require "escape"
 class Apriori
   include Enumerable
 
-  def initialize(infile, outfile, options = {})
-    @infile = infile
-    @outfile = outfile
+  def initialize(file_in, file_out, options = {})
+    @file_in = file_in
+    @file_out = file_out
 
     @ops = {}
 
@@ -23,12 +23,12 @@ class Apriori
   end
 
   def self.rules(options = {})
-    infile, outfile = Tempfile.new("apriori_in"), Tempfile.new("apriori_out")
+    file_in, file_out = Tempfile.new("apriori_in"), Tempfile.new("apriori_out")
 
     begin
-      yield new(infile, outfile, options)
+      yield new(file_in, file_out, options)
     ensure
-      [infile, outfile].each do |file|
+      [file_in, file_out].each do |file|
         file.close
         file.unlink
       end
@@ -36,27 +36,27 @@ class Apriori
   end
 
   def add(transaction)
-    @infile.puts transaction.join(",")
+    @file_in.puts transaction.join(",")
   end
 
   def each
     limit = File.expand_path("../../bin/limit", __FILE__)
     binary = File.expand_path("../../bin/apriori", __FILE__)
 
-    @infile.puts
-    @infile.flush
+    @file_in.puts
+    @file_in.flush
 
     command = Escape.shell_command([limit, @ops[:memory_limit].to_s, binary, "-tr", "-c#{@ops[:min_confidence]}",
       "-n#{@ops[:max_items]}", "-m#{@ops[:min_items]}", "-S#{@ops[:max_support]}",
-      "-s#{@ops[:min_support]}", "-I<", "-v;%S;%C", "-f,", "-k,", @infile.path, @outfile.path])
+      "-s#{@ops[:min_support]}", "-I<", "-v;%S;%C", "-f,", "-k,", @file_in.path, @file_out.path])
 
     `#{command} 2> /dev/null &> /dev/null`
 
     raise unless $?.exitstatus.zero?
 
-    @outfile.rewind
+    @file_out.rewind
 
-    @outfile.each do |line|
+    @file_out.each do |line|
       rule, support, confidence = line.strip.split(";")
 
       destination, source = rule.split("<")

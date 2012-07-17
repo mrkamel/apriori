@@ -26,7 +26,7 @@ irb> calculate
 => [{:destination=>["beer"], :source=>["mr.tom"], :support=>25.0, :confidence=>100.0}, ...]
 </pre>
 
-# Installation
+## Installation
 
 Gemfile:
 

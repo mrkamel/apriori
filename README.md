@@ -11,7 +11,7 @@ def calculate
 
   Apriori.rules do |apriori|
     apriori.add_transaction ["beer", "cheese"]
-    apriori.add_transaction "beer", "mr.tom"]
+    apriori.add_transaction ["beer", "mr.tom"]
     apriori.add_transaction ["beer", "cheese"]
 
     apriori.each do |rule|

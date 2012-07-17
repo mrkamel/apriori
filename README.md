@@ -26,3 +26,11 @@ irb> calculate
 => [{:destination=>["beer"], :source=>["mr.tom"], :support=>25.0, :confidence=>100.0}, ...]
 </pre>
 
+# Installation
+
+Gemfile:
+
+<pre>
+gem "apriori", :git => "git://github.com/mrkamel/apriori.git"
+</pre>
+
